@@ -1,0 +1,16 @@
+<h1>Hier titel</h1>
+
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'forward' name %}" method="post">
+{% csrf_token %}
+
+<p>{{survey_id}}</p>
+
+<label for="student_number">studentnummer: </label>
+<input id="student_number" type="text" name="student_number" value="">
+
+<input type="submit" value="naar vragenlijst" />
+</form>
