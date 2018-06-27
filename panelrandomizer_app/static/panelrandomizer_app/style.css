@@ -1,0 +1,12 @@
+.logo_panelrandomizer {
+    position: absolute;
+    height:60px;
+    width:300px;
+    background-image: url("images/logo-nl.svg");
+    background-repeat: no-repeat, repeat;
+    margin-left:1em;
+}
+
+
+
+

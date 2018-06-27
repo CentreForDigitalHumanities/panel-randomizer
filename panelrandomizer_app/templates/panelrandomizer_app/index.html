@@ -1,17 +1,26 @@
-<h1>Hier titel</h1>
+{% extends 'panelrandomizer_app/base.html' %}
+    {% block content %}
+           
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <br><br>
+            Het onderzoek zal naar verwachting {{ expected_completion_time}} minuten duren
+            <br><br>
 
-<br><br>
-Het onderzoek zal naar verwachting {{ expected_completion_time}} minuten duren
+            <div class="row col-md-8">
+                <form action="{% url 'forward' name %}" method="post">
+                {% csrf_token %}
 
-<form action="{% url 'forward' name %}" method="post">
-{% csrf_token %}
+                <p>{{survey_id}}</p>
+                <div class="col-md-8">
+                    <label for="student_number">studentnummer: </label>
+                    <input id="student_number" type="text" name="student_number" value="" class="form-control">
+                </div>
 
-<p>{{survey_id}}</p>
-
-<label for="student_number">studentnummer: </label>
-<input id="student_number" type="text" name="student_number" value="">
-
-<input type="submit" value="naar vragenlijst" />
-</form>
+                <div class="col-md-4">
+                        <label for="submit"><br></label>
+                <input id="submit"  type="submit" value="naar vragenlijst" class="btn btn-primary" />
+                </div>
+                </form>
+            </div>
+    {% endblock %}
