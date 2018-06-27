@@ -1,8 +1,9 @@
 <h1>Hier titel</h1>
 
-
-
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<br><br>
+Het onderzoek zal naar verwachting {{ expected_completion_time}} minuten duren
 
 <form action="{% url 'forward' name %}" method="post">
 {% csrf_token %}

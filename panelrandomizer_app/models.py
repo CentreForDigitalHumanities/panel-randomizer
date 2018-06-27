@@ -12,7 +12,6 @@ class Participant(models.Model):
     def hash_password():
         return 'myhasged pwd'
     """
-
     studentnumber_enc=models.TextField(null=True,blank=True)
     studentnumber_hash=models.TextField(null=True,blank=True)
     url=models.CharField(max_length=250)
@@ -24,6 +23,7 @@ class Survey(models.Model):
     survey_code_desktop=models.CharField(max_length=200)
     survey_code_mobile=models.CharField(max_length=200)
     survey_name=models.CharField(max_length=200)
+    expected_completion_time=models.CharField(max_length=200, default='10')
     number_of_goups=models.IntegerField()
     question_name_student_enc=models.CharField(max_length=200) # naam van de var die in de url moet om studentcode inte vullen
 

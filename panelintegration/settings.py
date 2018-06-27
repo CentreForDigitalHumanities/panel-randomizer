@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 # settings for this particular app
 PANELRANDOMIZER_CONFIG = [
     {
-        'BASE_URL': 'https://google.nl',
+        'BASE_URL': 'http://localhost/limesurvey/index.php',
         'ENCRYPTION_KEY': 'aaaaaaaaaaaaaaaa',
     }
 ]
