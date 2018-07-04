@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'panelrandomizer_app.apps.PanelintegrationAppConfig',
+    'panel_randomizer_app.apps.PanelintegrationAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'panelintegration.urls'
+ROOT_URLCONF = 'panel_integration.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'panelintegration.wsgi.application'
+WSGI_APPLICATION = 'panel_integration.wsgi.application'
 
 
 # Database
@@ -123,7 +123,8 @@ STATIC_URL = '/static/'
 # settings for this particular app
 PANELRANDOMIZER_CONFIG = [
     {
-        'BASE_URL': 'http://localhost/limesurvey/index.php',
-        'ENCRYPTION_KEY': 'aaaaaaaaaaaaaaaa',
+        'BASE_URL': '',
+        'ENCRYPTION_KEY': 'aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb',
+        'TEST_KEY':'123'
     }
 ]

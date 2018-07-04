@@ -1,0 +1,25 @@
+.logo_panelrandomizer {
+    position: relative;
+    height:60px;
+    width:300px;
+    background-image: url("images/logo-nl.svg");
+    background-repeat: no-repeat, repeat;
+    margin-left:1em;
+    margin-bottom:0.5em;
+}
+
+
+
+.button1 {
+    background-color: DodgerBlue; /* Blue background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 12px 16px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.button1:hover {
+    background-color: RoyalBlue;
+}

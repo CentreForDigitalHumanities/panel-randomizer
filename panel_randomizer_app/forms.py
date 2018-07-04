@@ -1,5 +1,5 @@
 from django import forms
-from panelrandomizer_app.models import Participant 
+from panel_randomizer_app.models import Participant 
 
 class ParicipantForm(forms.ModelForm):  
     class Meta:  
