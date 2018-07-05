@@ -123,8 +123,9 @@ STATIC_URL = '/static/'
 # settings for this particular app
 PANELRANDOMIZER_CONFIG = [
     {
-        'BASE_URL': '',
-        'ENCRYPTION_KEY': 'aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb',
-        'TEST_KEY':'123'
+        'BASE_URL': 'test',
+        'AES_SECRET': 'VD2AZZoXjRVQzF8K',
+        'HMAC_SECRET': 'UyCtJYf1DW2xrjsY',
+        'TEST_KEY':'123',
     }
 ]

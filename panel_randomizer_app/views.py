@@ -43,9 +43,10 @@ def participate(request, name):
     param_st_enc=survey.integration_parameter_student_enc
     param_branching=survey.integration_parameter_branching
 
-    student_number_cipher=Participant.encrypt(student_number) # method in Models
-    student_number_cipher_dec=base64.b64encode(student_number_cipher).decode() #  coding in base64, decode: convert byte to string
-    
+    aes_secret = settings.PANELRANDOMIZER_CONFIG[0]['AES_SECRET'].encode() 
+    hmac_secret = settings.PANELRANDOMIZER_CONFIG[0]['HMAC_SECRET'].encode() 
+    student_number_cipher_dec=Participant.encode(aes_secret, hmac_secret, student_number) # method in Models
+
     test_key = settings.PANELRANDOMIZER_CONFIG[0]['TEST_KEY'] # tbv testen een nummer dat niet wordt opgeslagen
     user_agent = parse(request.META['HTTP_USER_AGENT']) # useragent, desktop of mobiel
     last_group=survey.last_group

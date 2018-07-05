@@ -1,8 +1,9 @@
 from django.db import models
 from Cryptodome.Cipher import AES
 from django.conf import settings
+from base64 import b64encode
 from Cryptodome.Util.Padding import pad, unpad
-import hashlib
+from Cryptodome.Hash import HMAC, SHA256
 
 # Create your models here.
 class Participant(models.Model):
@@ -16,27 +17,15 @@ class Participant(models.Model):
         ("MOBILE", "mobile"),
     )
     device_participant=models.CharField(max_length=7, choices=DEVICE)
-
-    def encrypt(self):
-
-        # TODO de IV maken
-        BLOCK_SIZE = 16
-        key = settings.PANELRANDOMIZER_CONFIG[0]['ENCRYPTION_KEY'] 
-        hashed_key=hashlib.sha256(key.encode()).digest() # geeft lengte van 32 bytes = 256 bits?
-        hashed_key_half_1= hashed_key[:16]
-        hashed_key_half_2= hashed_key[16:]
-
-        #print(hashed_key)
-        #print(hashed_key_half_1)
-        #print(len(hashed_key_half_1))
-        #rint(hashed_key_half_2)
-        #print(len(hashed_key_half_2))
-        #iv=os.urandom(128)
-
-
-        cipher = AES.new(hashed_key_half_1, AES.MODE_CBC, 'This is an IV123'.encode()) # encode: convert all strings to byte
-        student_number_cipher = cipher.encrypt( pad( self.encode(), BLOCK_SIZE ) )
-        return student_number_cipher
+    
+    @staticmethod
+    def encode(aes_secret: bytes, hmac_secret: bytes, text: str) -> str:
+      
+        # Deterministically encodes a text.
+        iv = HMAC.new(hmac_secret, text.encode(), digestmod=SHA256).digest()
+        cipher = AES.new(aes_secret, AES.MODE_CFB, iv=iv[:16])
+        ct_bytes = cipher.encrypt(text.encode())
+        return b64encode(ct_bytes).decode('utf-8')
 
 
 class Survey(models.Model):
