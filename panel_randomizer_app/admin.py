@@ -5,10 +5,7 @@ from django.contrib import admin
 from .models import Participant
 from .models import Survey
 
-# admin.site.register(Participant)
-#admin.site.register(Survey)
-
-# eigen class voor de Survey om last_group niet te tonen
+# class for Survey to omit last_group in admin
 class SurveyAdmin(admin.ModelAdmin):
       exclude = ('last_group',)
 
