@@ -1,4 +1,6 @@
 *.pyc
 *.sqlite3
 .vscode/
-aantekeningen
+coverage/
+node_modules/
+panel_randomizer_app/static/scripts

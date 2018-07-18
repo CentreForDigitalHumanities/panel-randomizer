@@ -1,0 +1,35 @@
+{
+  "name": "panel-randomizer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "scripts/dist/youtube-helper.d.ts",
+  "scripts": {
+    "build": "webpack && npm run test",
+    "tsc": "tsc",
+    "test": "karma start karma.conf.js --single-run",
+    "dev": "webpack --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UUDigitalHumanitieslab/panelrandomizer.git"
+  },
+  "author": "Digital Humanities Lab, Utrecht University",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UUDigitalHumanitieslab/panelrandomizer/issues"
+  },
+  "homepage": "https://github.com/UUDigitalHumanitieslab/panelrandomizer#readme",
+  "devDependencies": {
+    "@types/es6-shim": "^0.31.35",
+    "@types/jasmine": "^2.6.2",
+    "@types/karma": "^1.7.1",
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-typescript": "^3.0.8",
+    "typescript": "^2.6.1",
+    "ts-loader": "^3.1.1",
+    "webpack": "^3.8.1"
+  }
+}
