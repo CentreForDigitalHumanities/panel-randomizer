@@ -78,7 +78,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ATOMIC_REQUESTS': True,
     }
 }
 
@@ -122,11 +121,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # settings for this particular app
-PANELRANDOMIZER_CONFIG = [
-    {
+APP_CONFIG = {
         'BASE_URL': 'test',
         'AES_SECRET': 'VD2AZZoXjRVQzF8K',
         'HMAC_SECRET': 'UyCtJYf1DW2xrjsY',
-        'TEST_KEY':'123',
+        'TEST_KEY':'123'
     }
-]
+

@@ -2,7 +2,6 @@ from django.db import models
 from Cryptodome.Cipher import AES
 from django.conf import settings
 from base64 import b64encode
-from Cryptodome.Util.Padding import pad, unpad
 from Cryptodome.Hash import HMAC, SHA256
 
 
@@ -39,6 +38,6 @@ class Survey(models.Model):
     integration_parameter_student_enc=models.CharField(max_length=200) # naam van de var die in de url moet om studentcode inte vullen Heet eigenlijk 'parameter' in panel integration
     integration_parameter_branching=models.CharField(max_length=200,null=True,blank=True) # naam van de var in de url die alvast het groepnummer beantwoordt die questiongroup kiest
     last_group=models.IntegerField(default=0) #
-    
+
     def __str__(self):
         return 'naam onderzoek: {}'.format(self.survey_name)
