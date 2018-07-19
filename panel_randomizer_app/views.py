@@ -28,6 +28,7 @@ def index(request, name):
 def participate(request, name):
 
     student_number = request.POST['student_number']
+    survey = Survey.objects.get(survey_name=name)
 
     if len(student_number) < 3:
         error_message = 'vul aub uw studentnummer in'
@@ -71,8 +72,8 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
     else:
         new_group = 1
 
-    survey_url=get_survey_url(survey, user_agent)[0]
-    device_participant=get_survey_url(survey, user_agent)[1]
+    survey_url = get_survey_url(survey, user_agent)[0]
+    device_participant = get_survey_url(survey, user_agent)[1]
 
     params = {param_branching: new_group,
               param_st_enc: student_number_cipher_dec}
@@ -94,14 +95,14 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
     return redirect_url
 
 
-def get_survey_url(survey,user_agent):
+def get_survey_url(survey, user_agent):
     device_participant = 'DESKTOP'
     if(user_agent.is_pc or user_agent.is_tablet):
-        survey_url = survey.survey_desktop_url 
+        survey_url = survey.survey_desktop_url
     else:
         if survey.survey_mobile_url != "":  # check if mobile url exists in database
             survey_url = survey.survey_mobile_url
             device_participant = 'MOBILE'
         else:
-            survey_url = survey.survey_desktop_url          
+            survey_url = survey.survey_desktop_url
     return [survey_url, device_participant]
