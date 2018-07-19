@@ -89,8 +89,8 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
         participation.save()
 
         # update table for rotation increment
-        Survey.objects.filter(survey_name=name).update(
-            last_group=new_group)
+    Survey.objects.filter(survey_name=name).update(
+        last_group=new_group)
 
     return redirect_url
 
