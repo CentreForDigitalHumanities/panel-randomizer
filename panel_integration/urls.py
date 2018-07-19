@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.conf.urls import url
 
 urlpatterns = [
-	url(r'^panel_randomizer_app/', include('panel_randomizer_app.urls')),    
-    path('admin/', admin.site.urls),
+	path('admin/', admin.site.urls),
+    url(r'^', include('panel_randomizer_app.urls')),    
+ 
 ]
