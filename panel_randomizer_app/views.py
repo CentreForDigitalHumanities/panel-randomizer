@@ -27,7 +27,7 @@ def index(request, name):
 
 def participate(request, name):
 
-    student_number = request.POST['student_number']
+    student_number = request.POST.get('student_number', '0')
     survey = Survey.objects.get(survey_name=name)
 
     if len(student_number) < 3:
