@@ -107,8 +107,15 @@ function onPlayerStateChange(event) {
 	}
 
 	if (event.data == YT.PlayerState.ENDED) {
-		// click the 'next' button in Lime Survey
-		document.getElementById("ls-button-submit").click();
+		// click the 'next' button in Lime Survey. 
+		// Different versions of Limesurvey provide different id's
+		var next_button = document.getElementById("ls-button-submit"); //limesurvey 3.12
+		
+		if (next_button == null) {
+			next_button = document.getElementById("movenextbtn"); //limesurvey 2.5
+		}
+
+		next_button.click();
 		event.target.destroy();
 	}
 }
