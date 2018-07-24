@@ -11,25 +11,25 @@ Panel Randomizer is a Python/Django application to create URLs that forward to a
 * A javascript to run YouTube films. The YouTube player is activated without controls, and without pause/stop feature. After film ending Lime Survery's 'next' button is automatically activated to turn the survey page.
 * Recognizes the device of the participant. Desktop users wil be forwarded to a in the admin specified survey. Mobile users can be forwarded to an other specified survey. If in the admin no mobile version is specified, all users are forwarded to the desktop version  
 
-###Prerequisites ###
+### Prerequisites ###
 Python > 3.0 <br>
 Django > 2.0<br>
 
 
-###Next steps###
+### Next steps ###
 
 Download or clone from GitHub<br>
 Deploy on your server<br>
 Have a Lime Survey account ready
 
-##Manual##
+## Manual ##
 1.  Create a Lime Survey (optional: with different groups)
 2.  Put one or two questions in the first group to be prefilled by the URL of Panel Randomizer: studentnumber and (optional) branching. These questions can be made 'hidden'
 3.  Optional: create other groups that will be shown if the answer on the routing question is 1 to ... [number of groups]. Fill out in 'relevance equation' of this group: [questionid]==[rotation number]. For example Q001==1. In this case this particular group will only show when the question Q001 was prefilled with 1 by the forwarding url of Panel Randomizer.
 4. in 'Panelintegration' in Lime Survey settings, add the URL parameters that are used for prefilling the answers. Choose a name for the student number parameter that needs to be taken from the URL and assign the parameter to the target question from step 2.<br> Choose a name for the routing parameter and assign the parameter to the target question for the branching from step 2.
 5. Enter the Admin of Panel Randomizer
 6. After 'Surveys'  choose 'add'
-7. Fill ot the form in the new screen:<br>
+7. Fill out the form in the new screen:<br>
 	* A survey name (required). This name will be used as the last part of the link for the respondents. E.g. https://acc.panel-randomizer.hum.uu.nl/survey1. The name you entered was 'survey1' Now all your settings for this survey will be retrieved and used.
 	* Survey desktop url (required). This is the url you see in your LimeSurvey for desktop users under 'Survey URL'
 	* Survey mobile url (optional). The LimeSurvey url for the users of mobile devices.
