@@ -3,10 +3,10 @@
 Panel Randomizer is a Python/Django application to create URLs that forward to a specified LimeSurvey questionaire
 
 * The respondent fills out his/her (student) ID, which is saved AES encoded in the database.
-* Respondents are only forwarded one first time to a questionaire. If the respondents ID is retrieved form the database, the respondent is redirected to a screenout. 
+* Respondents are only forwarded one first time to a questionaire. If the respondents ID is retrieved from the database, the respondent is redirected to a screenout. 
 * The resulting forwarding URL contains two GET variables (key-value pairs) that can be used to prefill questions in the Lime Survey questionaire:
 	*  Respondent ID. The URL key can be named randomly in the admin (see: Manual)
-	*  Branching. The URL key can be named randomly in the admin. The value in the URL is a rotating number, which runs from 1 to the limit value that is defined in the admin. Using this as a pre-answered value, a specified group of questions can be shown in LimeSurvey using LimeSurvey's so called 'relevance equatation'<br><br>
+	*  Branching. The URL key can be named randomly in the admin. The value in the URL is a rotating number, which runs from 1 to the limit value that is defined in the admin. Using this as a pre-answered value, a specified group of questions can be shown in LimeSurvey using LimeSurvey's so called 'relevance equation'<br><br>
 
 * A javascript to run YouTube films. The YouTube player is activated without controls, and without pause/stop feature. After film ending LimeSurvery's 'next' button is automatically activated to turn the survey page.
 * Recognizes the device of the participant. Desktop users wil be forwarded to a survey that is specified in the admin settings. Mobile users can be forwarded to an other specified survey that is optimized for mobile devices. If in the admin no mobile version is specified, all users are forwarded to the desktop version  
@@ -20,7 +20,7 @@ Django > 2.0<br>
 
 Download or clone from GitHub<br>
 Deploy on your server<br>
-Have a Lime Survey account ready
+Have a LimeSurvey account ready
 
 ## Manual ##
 1.  Create a survey in LimeSurvey (optional: with different groups)
@@ -30,7 +30,7 @@ Have a Lime Survey account ready
 5. Enter the Admin of Panel Randomizer. (https://panel-randomizer.hum.uu.nl/admin/)
 6. Right from 'Surveys'  choose 'add'.
 7. Fill out in the new screen:<br>
-	* A survey name (required). This name will be used as the last part of the link for the respondents. E.g. https://panel-randomizer.hum.uu.nl/survey1. The name you entered was 'survey1' Now all your settings for this survey will be retrieved and used.
+	* A survey name (required). This name will be used as the last part of the link for the respondents. E.g. https://panel-randomizer.hum.uu.nl/survey1. The name you entered was 'survey1'. Now all your settings for this survey will be retrieved and used.
 	* Survey desktop url (required). This is the url you see in your LimeSurvey for desktop users under 'Survey URL'. Panel Randomizer wil generate this url with extra GET variables.
 	* Survey mobile url (optional). The LimeSurvey url for the users of mobile devices.
 	* Expected completion time. This will be shown on the welcome screen of Panel Randomizer
