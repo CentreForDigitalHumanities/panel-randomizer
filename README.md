@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/panelrandomizer.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/panelrandomizer)
+
 # Panel Randomizer #
 
 Panel Randomizer is a Python/Django application to create URLs that forward to a specified LimeSurvey questionaire

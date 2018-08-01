@@ -1,0 +1,40 @@
+{% extends 'panel_randomizer_app/base.html' %} {% block content %}
+
+<br>
+<br>
+<p>Het onderzoek zal naar verwachting
+    <b>{{ expected_completion_time}} </b> minuten duren</p>
+<p>De vragenlijst kan niet worden afgebroken. Vul alle vragen aub volledig in zonder te stoppen.</p>
+{% if error_message %}
+<div class="col-md-8 alert alert-danger">
+    <strong>{{ error_message }}</strong>
+</div>
+{% endif %}
+
+
+
+<div class="row col-md-12">
+    <form action="{% url 'participate' name %}" method="post">
+        {% csrf_token %}
+
+        <p>{{survey_id}}</p>
+
+        <div class="col-md-8">
+            <label for="student_number">studentnummer: </label>
+        </div>
+
+        <div class="col-md-8">
+            <input id="student_number" type="text" name="student_number" value="{{student_number}}" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <button id="submit" type="submit" value="" class="btn btn-primary pull-right" />vragenlijst
+            <span class="fa fa-chevron-circle-right"></span>
+            </button>
+        </div>
+    </form>
+    </div>
+
+
+
+    {% endblock %}

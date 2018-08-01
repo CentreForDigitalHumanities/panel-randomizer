@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>Panel Randomizer</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'panel_randomizer_app/style.css' %}">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="content container col-md-12">
+            <div class="page-header">
+                <div class="row ">
+                    
+                    <div class="col-md-2">
+                        <a href="/{{ name }}"><div class="logo_panelrandomizer"></div></a>
+                    </div>
+                    <div class="col-md-8 text-center">
+                        <a href="/{{ name }}"><h1>Panel Randomizer</h1></a>
+                    </div>
+                
+
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    
+                        {% block content %}
+                        {% endblock %}
+                
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div> 
+    </body>
+    </html>
