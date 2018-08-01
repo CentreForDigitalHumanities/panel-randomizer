@@ -17,8 +17,8 @@
 	
 */
 
-const ClassName = 'single-play-video';
-const YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+var ClassName = 'single-play-video';
+var YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
 function getYouTubeId(url) {
 	var match = url.match(YouTubeIdPattern);
@@ -45,9 +45,11 @@ window['onYouTubeIframeAPIReady'] = function () {
 }
 
 function bindSinglePlay(elements) {
-	let [videoWidth, videoHeight] = getVideoDimensions();
+	var dimensions = getVideoDimensions();
+	var videoWidth = dimensions[0];
+	var videoHeight = dimensions[1];	
 
-	for (let element of elements) {
+	for (var element of elements) {
 		var url = element.getAttribute('data-video-url');
 		var videoId = getYouTubeId(url);
 
@@ -106,7 +108,6 @@ function onPlayerStateChange(event) {
 		event.target.playVideo();
 	}
 
-
 	if (event.data == YT.PlayerState.ENDED) {
 		// click the 'next' button in Lime Survey. 
 		// Different versions of Limesurvey provide different id's
@@ -119,5 +120,4 @@ function onPlayerStateChange(event) {
 		next_button.click();
 		event.target.destroy();
 	}
-
 }

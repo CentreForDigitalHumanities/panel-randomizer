@@ -1,4 +1,3 @@
-import { getYouTubeId } from './youtube-helper';
 describe('YouTube helper', () => {
     it('Parses YouTube URL', () => {
         let tests = {
