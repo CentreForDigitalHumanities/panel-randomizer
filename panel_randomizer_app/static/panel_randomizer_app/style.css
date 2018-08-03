@@ -1,9 +1,24 @@
+
 .logo_panelrandomizer {
     position: relative;
     height:60px;
-    width:300px;
+    width:260px;
     background-image: url("images/logo-nl.svg");
     background-repeat: no-repeat;
-    margin-left:1em;
+    margin-bottom:1em;
+    background-size:contain;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo_dh_lab{
+    position: relative;
+    height:35px;
+    width:168px;
+    background-image: url("images/LogoLab678x141.png");
+    background-repeat: no-repeat;
+    background-size:contain;
     margin-bottom:0.5em;
+    margin-left: auto;
+    margin-right: auto;
 }
