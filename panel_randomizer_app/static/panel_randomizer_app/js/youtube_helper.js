@@ -49,11 +49,11 @@ function bindSinglePlay(elements) {
 	var videoWidth = dimensions[0];
 	var videoHeight = dimensions[1];	
 
-	for (var element of elements) {
-		var url = element.getAttribute('data-video-url');
+	for (i=0; i<elements.length; i++) {
+		var url = elements[i].getAttribute('data-video-url');
 		var videoId = getYouTubeId(url);
-
-		new YT.Player(element, {
+		
+		new YT.Player(elements[i], {
 			height: videoHeight,
 			width: videoWidth,
 			videoId: videoId,
