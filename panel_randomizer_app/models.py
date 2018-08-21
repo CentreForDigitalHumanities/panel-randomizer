@@ -33,7 +33,8 @@ class Survey(models.Model):
     survey_name=models.CharField(max_length=200, help_text='Will be shown to respondents')
     survey_desktop_url=models.CharField(max_length=200, help_text='Copy from LimeSurvey')
     survey_mobile_url=models.CharField(max_length=200, blank=True, default='', help_text='Optional. Copy from LimeSurvey')
-    expected_completion_time=models.CharField(max_length=200, default='10', help_text='In minutes')
+    welcome_text=models.TextField(default='', help_text='Welcome text')
+    screen_out_text=models.TextField(default='', help_text='Screenout text')
     group_count=models.PositiveIntegerField(help_text='The number of groups you wish to rotate')
     integration_parameter_student_enc=models.CharField(max_length=200, verbose_name="integration_param_student_number", help_text='Same as in LimeSurvey\'s Panel Integration') # naam van de var die in de url moet om studentcode inte vullen Heet eigenlijk 'parameter' in panel integration
     integration_parameter_branching=models.CharField(max_length=200,null=True,blank=True, verbose_name="integration_param_branching", help_text='Optional. Same as in LimeSurvey\'s Panel Integration') # naam van de var in de url die alvast het groepnummer beantwoordt die questiongroup kiest
