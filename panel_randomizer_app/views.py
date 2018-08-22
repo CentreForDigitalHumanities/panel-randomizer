@@ -18,7 +18,7 @@ def index(request, name):
     try:
         survey = Survey.objects.get(survey_name=name)
         template = loader.get_template('panel_randomizer_app/index.html')
-        return render(request, 'panel_randomizer_app/index.html', {'name': name, 'welcome_text': survey.welcome_text.splitlines() })
+        return render(request, 'panel_randomizer_app/index.html', {'name': name, 'welcome_text': survey.welcome_text.splitlines()})
 
     except Survey.DoesNotExist:
         template = loader.get_template('panel_randomizer_app/url_invalid.html')
@@ -26,12 +26,11 @@ def index(request, name):
 
 
 def participate(request, name):
-
     student_number = request.POST.get('student_number', '0')
     survey = Survey.objects.get(survey_name=name)
 
     if len(student_number) < 3:
-        error_message = 'vul aub uw studentnummer in'
+        error_message = 'Vul je studentnummer in.'
         return render(request, 'panel_randomizer_app/index.html', {
             'name': name,
             'student_number': student_number,
@@ -46,13 +45,12 @@ def participate(request, name):
 
     #  start transaction
     with transaction.atomic():
-
         student_in_db_enc = Participant.objects.filter(
             student_number_enc=student_number_cipher_dec)
 
         if student_in_db_enc:
             template = loader.get_template('panel_randomizer_app/exit.html')
-            return render(request, 'panel_randomizer_app/exit.html', {'screen_out_text': survey.screen_out_text.splitlines() })
+            return render(request, 'panel_randomizer_app/exit.html', {'screen_out_text': survey.screen_out_text.splitlines()})
         else:
             return redirect(redirect_participant(request, name, student_number, student_number_cipher_dec))
 
@@ -67,7 +65,7 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
     last_group = survey.last_group
     number_of_groups = survey.group_count
 
-    if (last_group < number_of_groups):
+    if last_group < number_of_groups:
         new_group = last_group + 1
     else:
         new_group = 1
@@ -79,11 +77,11 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
               param_st_enc: student_number_cipher_dec}
 
     if '?' in survey_url:
-        redirect_url = survey_url+"&"+urllib.parse.urlencode(params)
+        redirect_url = survey_url + "&" + urllib.parse.urlencode(params)
     else:
-        redirect_url = survey_url+"?"+urllib.parse.urlencode(params)
+        redirect_url = survey_url + "?" + urllib.parse.urlencode(params)
 
-    if(student_number != test_key):
+    if student_number != test_key:
         participation = Participant(
             student_number_enc=student_number_cipher_dec, device_participant=device_participant)
         participation.save()
@@ -97,7 +95,7 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
 
 def get_survey_url(survey, user_agent):
     device_participant = 'DESKTOP'
-    if(user_agent.is_pc or user_agent.is_tablet):
+    if user_agent.is_pc or user_agent.is_tablet:
         survey_url = survey.survey_desktop_url
     else:
         if survey.survey_mobile_url != "":  # check if mobile url exists in database
