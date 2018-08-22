@@ -2,7 +2,10 @@
 
 <br>
 <br>
-<p>{{welcome_text|safe}}</p>
+{% for line in welcome_text %}
+<p>{{line}}</p>
+{% endfor %}
+
 {% if error_message %}
 <div class="col-md-8 alert alert-danger">
     <strong>{{ error_message }}</strong>

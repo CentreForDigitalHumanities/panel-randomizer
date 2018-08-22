@@ -18,7 +18,7 @@ def index(request, name):
     try:
         survey = Survey.objects.get(survey_name=name)
         template = loader.get_template('panel_randomizer_app/index.html')
-        return render(request, 'panel_randomizer_app/index.html', {'name': name, 'welcome_text': survey.welcome_text, })
+        return render(request, 'panel_randomizer_app/index.html', {'name': name, 'welcome_text': survey.welcome_text.splitlines() })
 
     except Survey.DoesNotExist:
         template = loader.get_template('panel_randomizer_app/url_invalid.html')
@@ -52,7 +52,7 @@ def participate(request, name):
 
         if student_in_db_enc:
             template = loader.get_template('panel_randomizer_app/exit.html')
-            return render(request, 'panel_randomizer_app/exit.html', {'screen_out_text': survey.screen_out_text })
+            return render(request, 'panel_randomizer_app/exit.html', {'screen_out_text': survey.screen_out_text.splitlines() })
         else:
             return redirect(redirect_participant(request, name, student_number, student_number_cipher_dec))
 

@@ -1,5 +1,9 @@
 {% extends 'panel_randomizer_app/base.html' %}
     {% block content %}
-    <p>{{screen_out_text|safe}}</p>
+
+    {% for line in screen_out_text %}
+    <p><h4>{{line}}</h4></p>
+    {% endfor %}
+
 {% endblock %}
 
