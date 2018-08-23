@@ -83,7 +83,7 @@ function getVideoDimensions() {
 	var screenWidth = window.innerWidth;
 	var videoWidth, videoHeight;
 	if (screenWidth < 640) {
-		videoWidth = screenWidth - (screenWidth / 15);
+		videoWidth = screenWidth - (screenWidth / 5);
 		videoHeight = (videoWidth / 16) * 9;
 	}
 	else {

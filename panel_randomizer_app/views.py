@@ -34,7 +34,7 @@ def participate(request, name):
         return render(request, 'panel_randomizer_app/index.html', {
             'name': name,
             'student_number': student_number,
-            'welcome_text': survey.welcome_text,
+            'welcome_text': survey.welcome_text.splitlines(),
             'error_message': error_message}
         )
 
