@@ -56,7 +56,7 @@ See: [dhlab-manuals.sites.uu.nl/handleiding/panel-randomizer-manual](https://dhl
 10. To add a YouTube movie you need to add two lines of code to a question:
 
 ```html
-<script src="https://panel-randomizer.hum.uu.nl/static/panel_randomizer_app/js/YouTube_helper.js" async></script>
+<script src="https://panel-randomizer.hum.uu.nl/static/js/youtube_helper.js" async></script>
 <div class="single-play-video" data-video-url="https://www.youtube.com/watch?v=9RTaIpVuTqE"> </div>`
 ```
 
