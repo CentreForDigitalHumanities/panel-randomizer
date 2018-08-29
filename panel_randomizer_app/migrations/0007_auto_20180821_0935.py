@@ -17,11 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='survey',
             name='screen_out_text',
-            field=models.TextField(default='', help_text='Screenout text'),
+            field=models.TextField(default='', help_text='This text is shown when the participant has already participated in another survey and is not allowed to participate.', verbose_name='Screen-out text'),
         ),
         migrations.AddField(
             model_name='survey',
             name='welcome_text',
-            field=models.TextField(default='', help_text='Welcome text'),
+            field=models.TextField(default='', help_text='This text is shown when the user enters the survey.'),
         ),
     ]

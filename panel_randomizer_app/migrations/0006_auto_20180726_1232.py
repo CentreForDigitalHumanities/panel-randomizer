@@ -23,12 +23,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='survey',
             name='integration_parameter_branching',
-            field=models.CharField(blank=True, help_text="Optional. Same as in LimeSurvey's Panel Integration", max_length=200, null=True, verbose_name='integration_param_branching'),
+            field=models.CharField(blank=True, help_text="Optional. The same value should be set in LimeSurvey's Panel Integration", max_length=200, null=True, verbose_name='Branching parameter'),
         ),
         migrations.AlterField(
             model_name='survey',
             name='integration_parameter_student_enc',
-            field=models.CharField(help_text="Same as in LimeSurvey's Panel Integration", max_length=200, verbose_name='integration_param_student_number'),
+            field=models.CharField(help_text="The same value should be set in LimeSurvey's Panel Integration", max_length=200, verbose_name='Student number parameter'),
         ),
         migrations.AlterField(
             model_name='survey',
@@ -43,6 +43,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='survey',
             name='survey_name',
-            field=models.CharField(help_text='Will be shown to respondents', max_length=200),
+            field=models.CharField(help_text='Will be shown to respondents and is used for creating the URL for this survey.', max_length=200),
         ),
     ]

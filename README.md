@@ -23,14 +23,21 @@ How it works:
 
 ## Prerequisites ##
 
-* Python > 3.0
-* Django > 2.0
+* Python >= 3.4
+* LimeSurvey
 
-### Next steps ###
+## Development ##
 
-* Download or clone from GitHub.
-* Deploy on your server.
-* Have a LimeSurvey account ready.
+Optional: Create a virtual environment using `virtualenv` for Python 3.
+
+```
+pip install -r requirements.txt`
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Go to `http://127.0.0.1:8000/admin`.
 
 ## Manual ##
 

@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpResponse
+from django.utils import translation
+from django.utils.translation import gettext as _
+
 from .models import Participant, Survey
 import user_agents
 from django.conf import settings
 import base64
 from django.db import transaction
 import urllib.parse
-
 
 def url_invalid(request):
     template = loader.get_template('panel_randomizer_app/url_invalid.html')
@@ -17,8 +19,13 @@ def url_invalid(request):
 def index(request, name):
     try:
         survey = Survey.objects.get(survey_name=name)
+        set_language(survey, request)
         template = loader.get_template('panel_randomizer_app/index.html')
-        return render(request, 'panel_randomizer_app/index.html', {'name': name, 'welcome_text': survey.welcome_text.splitlines()})
+        return render(request, 'panel_randomizer_app/index.html',
+                      {
+                          'name': name,
+                          'welcome_text': survey.welcome_text.splitlines()
+                      })
 
     except Survey.DoesNotExist:
         template = loader.get_template('panel_randomizer_app/url_invalid.html')
@@ -28,15 +35,16 @@ def index(request, name):
 def participate(request, name):
     student_number = request.POST.get('student_number', '0')
     survey = Survey.objects.get(survey_name=name)
+    set_language(survey, request)
 
     if len(student_number) < 3:
-        error_message = 'Vul je studentnummer in.'
+        error_message = _('Fill in your student number.')
         return render(request, 'panel_randomizer_app/index.html', {
             'name': name,
             'student_number': student_number,
             'welcome_text': survey.welcome_text.splitlines(),
-            'error_message': error_message}
-        )
+            'error_message': error_message
+        })
 
     aes_secret = settings.APP_CONFIG['AES_SECRET'].encode()
     hmac_secret = settings.APP_CONFIG['HMAC_SECRET'].encode()
@@ -57,6 +65,7 @@ def participate(request, name):
 
 def redirect_participant(request, name, student_number, student_number_cipher_dec):
     survey = Survey.objects.get(survey_name=name)
+    set_language(survey, request)
     param_st_enc = survey.integration_parameter_student_enc
     param_branching = survey.integration_parameter_branching
     # use for testing connection and transfer of variables to limesurvey survey
@@ -104,3 +113,7 @@ def get_survey_url(survey, user_agent):
         else:
             survey_url = survey.survey_desktop_url
     return [survey_url, device_participant]
+
+def set_language(survey, request):
+    translation.activate(survey.language)
+    request.LANGUAGE_CODE = translation.get_language()
