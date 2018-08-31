@@ -15,50 +15,80 @@
 	https://youtu.be/kxGWsHYITAw
 	kxGWsHYITAw
 	
+	Optionally:
+
+	Add data-before-next to make it appear and play *before*
+	continuing to the next question. This is a work-around for Safari
+	which doesn't allow auto-playing videos anymore.
+
+	E.g.
+
+	<div class="single-play-video" data-video-url="URL" data-before-next="true"></div>
 */
 
-var ClassName = 'single-play-video';
-var YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-
-function getYouTubeId(url) {
-	var match = url.match(YouTubeIdPattern);
-	if (match && match[1]) {
-		return match[1];
-	}
-
-	if (url.length >= 11 && /^[^#\&\?]*$/.test(url)) {
-		// only an ID
-		return url;
-	}
-	return false;
-}
-
 var YT; // set by YouTube iframe
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
 
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+(function () {
+	var ClassName = 'single-play-video';
+	var YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
 
-window['onYouTubeIframeAPIReady'] = function () {
-	bindSinglePlay(document.getElementsByClassName(ClassName));
-}
+	function getYouTubeId(url) {
+		var match = url.match(YouTubeIdPattern);
+		if (match && match[1]) {
+			return match[1];
+		}
 
-function bindSinglePlay(elements) {
-	var dimensions = getVideoDimensions();
-	var videoWidth = dimensions[0];
-	var videoHeight = dimensions[1];	
+		if (url.length >= 11 && /^[^#\&\?]*$/.test(url)) {
+			// only an ID
+			return url;
+		}
+		return false;
+	}
 
-	for (i=0; i<elements.length; i++) {
-		var url = elements[i].getAttribute('data-video-url');
+	var tag = document.createElement('script');
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	window['onYouTubeIframeAPIReady'] = function () {
+		bindSinglePlay(document.getElementsByClassName(ClassName));
+	}
+
+	function bindSinglePlay(elements) {
+		for (var i = 0; i < elements.length; i++) {
+			createPlayer(elements[i]);
+		}
+	}
+
+	function createPlayer(element) {
+		var beforeNext = !!element.getAttribute('data-before-next');
+
+		var dimensions = getVideoDimensions(beforeNext);
+		var videoWidth = dimensions[0];
+		var videoHeight = dimensions[1];
+
+		var url = element.getAttribute('data-video-url');
 		var videoId = getYouTubeId(url);
-		
-		new YT.Player(elements[i], {
+
+		if (beforeNext) {
+			// already load the video player and hide it
+			// this will be shown when the user clicks the 'next'-button
+			videoElement = document.createElement('div');
+
+			element.appendChild(videoElement);
+			element.style.height = '0';
+			element.style.overflow = 'hidden';
+		} else {
+			videoElement = element;
+		}
+
+		var player = new YT.Player(videoElement, {
 			height: videoHeight,
 			width: videoWidth,
 			videoId: videoId,
 			events: {
-				'onReady': onPlayerReady,
+				'onReady': !beforeNext ? onPlayerReady : function () {},
 				'onStateChange': onPlayerStateChange,
 				'onError': onPlayerError
 			},
@@ -73,51 +103,147 @@ function bindSinglePlay(elements) {
 				'rel': 0
 			}
 		});
-	}
-}
 
-/**
- * Limits the size of the video to 640x390
- */
-function getVideoDimensions() {
-	var screenWidth = window.innerWidth;
-	var videoWidth, videoHeight;
-	if (screenWidth < 640) {
-		videoWidth = screenWidth - (screenWidth / 5);
-		videoHeight = (videoWidth / 16) * 9;
-	}
-	else {
-		videoWidth = 640;
-		videoHeight = 390;
+		if (beforeNext) {
+			wrapNextButton(element, player);
+		}
 	}
 
-	return [videoWidth, videoHeight];
-}
+	/**
+	 * Limits the size of the video
+	 */
+	function getVideoDimensions(beforeNext) {
+		var screenWidth = window.innerWidth;
+		var screenHeight = window.innerHeight;
 
-function onPlayerError(event) {
-	alert('Video does not play, please contact research department')
-}
+		var videoWidth, videoHeight;
 
-function onPlayerReady(event) {
-	event.target.playVideo();
-}
+		if (beforeNext) {
+			// this is played in a box in the entire window.
+			// Can make it quite big
+			videoWidth = screenWidth - 20;
+			videoHeight = (videoWidth / 16) * 9;
 
-function onPlayerStateChange(event) {
-	if (event.data == YT.PlayerState.PAUSED) {
-		// disable pausing the video, by starting it again
+			if (videoHeight > (screenHeight - 20)) {
+				videoHeight = screenHeight - 20;
+				videoWidth = (screenHeight / 9) * 16;
+			}
+		} else {
+			// should fit inside the question box
+			if (screenWidth < 640) {
+				videoWidth = screenWidth - (screenWidth / 5);
+				videoHeight = (videoWidth / 16) * 9;
+			} else {
+				videoWidth = 640;
+				videoHeight = 390;
+			}
+		}
+
+		return [videoWidth, videoHeight];
+	}
+
+	function onPlayerError(event) {
+		alert('Video does not play, please contact research department')
+	}
+
+	function onPlayerReady(event) {
 		event.target.playVideo();
 	}
 
-	if (event.data == YT.PlayerState.ENDED) {
-		// click the 'next' button in Lime Survey. 
-		// Different versions of Limesurvey provide different id's
-		var next_button = document.getElementById("ls-button-submit"); //limesurvey 3.12
-		
-		if (next_button == null) {
-			next_button = document.getElementById("movenextbtn"); //limesurvey 2.5
+	function onPlayerStateChange(event) {
+		if (event.data == YT.PlayerState.PAUSED) {
+			// disable pausing the video, by starting it again
+			event.target.playVideo();
 		}
 
-		next_button.click();
-		event.target.destroy();
+		if (event.data == YT.PlayerState.ENDED) {
+			goNext();
+			event.target.destroy();
+		}
 	}
-}
+
+	function getNextButton() {
+		// click the 'next' button in LimeSurvey. 
+		// Different versions of LimeSurvey provide different IDs
+		var nextButton = document.getElementById("ls-button-submit"); // LimeSurvey 3.12
+
+		if (nextButton == null) {
+			nextButton = document.getElementById("movenextbtn"); // LimeSurvey 2.5
+		}
+
+		return nextButton;
+	}
+
+	function goNext() {
+		var nextButton = getNextButton();
+		// LimeSurvey disables this button on click, re-enable it
+		// to allow the click event to work.		
+		nextButton.className = nextButton.className.replace('disabled', '');
+		nextButton.disabled = false;
+		nextButton.click();
+	}
+
+	function wrapNextButton(container, player) {
+		var nextButton = getNextButton();
+		nextButton.style.display = 'none';
+
+		var fakeButton = document.createElement(nextButton.tagName);
+		fakeButton.className = nextButton.className.replace('submit', '');
+		fakeButton.innerHTML = nextButton.innerHTML;
+
+		nextButton.parentNode.appendChild(fakeButton);
+
+		fakeButton.addEventListener('click', function (event) {
+			if (!checkMandatoryQuestions()) {
+				// actually submit, when the check for mandatory answers
+				// fails: the validation errors are rendered on the server
+				goNext();
+				return;
+			}
+
+			container.style.position = 'fixed';
+			container.style.height = 'auto';
+			container.style.overflow = 'inherit';
+			container.style.top = 0;
+			container.style.left = 0;
+			container.style.width = '100%';
+			container.style.height = '100%';
+			container.style.background = 'black';
+			container.style.textAlign = 'center';
+			container.style.zIndex = 2000;
+
+			event.preventDefault();
+			player.playVideo();
+		});
+	}
+
+	function checkMandatoryQuestions() {
+		var mandatoryQuestions = document.getElementsByClassName('mandatory');
+		for (var i = 0; i < mandatoryQuestions.length; i++) {
+			var question = mandatoryQuestions[i];
+			var checked = false;
+			var radios = question.getElementsByClassName('radio');
+			if (radios.length) {
+				for (var j = 0; j < radios.length; j++) {
+					if (radios[j].checked) {
+						checked = true;
+					}
+				}
+			}
+
+			var textareas = question.getElementsByClassName('textarea');
+			if (textareas.length) {
+				for (var j = 0; j < textareas.length; j++) {
+					if (textareas[j].value) {
+						checked = true;
+					}
+				}
+			}
+			if (!checked) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+})();
