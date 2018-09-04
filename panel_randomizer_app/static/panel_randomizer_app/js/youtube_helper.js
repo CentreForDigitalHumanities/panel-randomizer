@@ -231,10 +231,12 @@ var YT; // set by YouTube iframe
 				}
 			}
 
-			var textareas = question.getElementsByClassName('textarea');
-			if (textareas.length) {
-				for (var j = 0; j < textareas.length; j++) {
-					if (textareas[j].value) {
+			var fields = [].concat(
+				...question.getElementsByClassName('textarea'),
+				...question.getElementsByClassName('numeric'));
+			if (fields.length) {
+				for (var j = 0; j < fields.length; j++) {
+					if (fields[j].value) {
 						checked = true;
 					}
 				}
