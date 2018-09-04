@@ -231,9 +231,7 @@ var YT; // set by YouTube iframe
 				}
 			}
 
-			var fields = [].concat(
-				...question.getElementsByClassName('textarea'),
-				...question.getElementsByClassName('numeric'));
+			var fields = question.querySelectorAll('.textarea,.numeric');
 			if (fields.length) {
 				for (var j = 0; j < fields.length; j++) {
 					if (fields[j].value) {
