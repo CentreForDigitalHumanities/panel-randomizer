@@ -11,6 +11,7 @@ import base64
 from django.db import transaction
 import urllib.parse
 
+
 def url_invalid(request):
     template = loader.get_template('panel_randomizer_app/url_invalid.html')
     return render(request, 'panel_randomizer_app/url_invalid.html')
@@ -92,7 +93,9 @@ def redirect_participant(request, name, student_number, student_number_cipher_de
 
     if student_number != test_key:
         participation = Participant(
-            student_number_enc=student_number_cipher_dec, device_participant=device_participant)
+            student_number_enc=student_number_cipher_dec,
+            url=redirect_url,
+            device_participant=device_participant)
         participation.save()
 
         # update table for rotation increment
@@ -113,6 +116,7 @@ def get_survey_url(survey, user_agent):
         else:
             survey_url = survey.survey_desktop_url
     return [survey_url, device_participant]
+
 
 def set_language(survey, request):
     translation.activate(survey.language)
