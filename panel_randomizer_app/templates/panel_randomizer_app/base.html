@@ -1,0 +1,45 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>Panel Randomizer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'panel_randomizer_app/style.css' %}">
+        
+    </head>
+    <body>
+        <div class="content container col-md-12">
+            <div class="page-header">
+                <div class="row ">
+                    
+                    <div class="col-md-2 ">
+                        <div class="logo_container">
+                            <div role="img" class="logo_panelrandomizer" alt="Utrecht University" title="Utrecht University"></div>
+                            <a href="https://dig.hum.uu.nl/" target="_blank"><div role="img" class="logo_dh_lab" alt="Digital Humanities Lab" title="Digital Humanities Lab"></div></a>
+                        </div>
+                    </div>
+                    <div class="col-md-7 text-center">
+                        <a href="/{{ name }}"><h1>Panel Randomizer</h1></a>
+                    </div>
+                  
+
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    
+                        {% block content %}
+                        {% endblock %}
+                
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div> 
+    </body>
+    </html>

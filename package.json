@@ -1,0 +1,27 @@
+{
+  "name": "panel-randomizer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "scripts/panel_randomizer_app/js/youtube_helper.js",
+  "scripts": {
+    "build": "echo No build needed for plain JavaScript",
+    "test": "karma start karma.conf.js --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UUDigitalHumanitieslab/panelrandomizer.git"
+  },
+  "author": "Digital Humanities Lab, Utrecht University",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UUDigitalHumanitieslab/panelrandomizer/issues"
+  },
+  "homepage": "https://github.com/UUDigitalHumanitieslab/panelrandomizer#readme",
+  "devDependencies": {
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0"
+  },
+  "dependencies": {}
+}

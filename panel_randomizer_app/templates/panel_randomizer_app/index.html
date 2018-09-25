@@ -1,0 +1,35 @@
+{% extends 'panel_randomizer_app/base.html' %}
+{% load i18n %}
+{% block content %}
+<div lang="{{ request.LANGUAGE_CODE }}">
+    {% for line in welcome_text %}
+    <p>{{line}}</p>
+    {% endfor %}
+
+    {% if error_message %}
+    <div class="col-md-8 alert alert-danger">
+        <strong>{{ error_message }}</strong>
+    </div>
+    {% endif %}
+
+    <div class="row col-md-12">
+        <form action="{% url 'participate' name %}" method="post">
+            {% csrf_token %}
+
+            <div class="col-md-8">
+                <label for="student_number">{% trans "Student number:" %}</label>
+            </div>
+
+            <div class="col-md-8">
+                <input id="student_number" autocomplete="off" type="text" name="student_number" value="{{student_number}}" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+                <button id="submit" type="submit" value="" class="btn btn-primary pull-right" />{% trans "Participate" %}
+                <span class="fa fa-chevron-circle-right"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
