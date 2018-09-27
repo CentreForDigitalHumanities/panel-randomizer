@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.utils import translation
 from django.utils.translation import gettext as _
 
-from .models import Participant, Survey
+from .models import Participant, Survey, SurveyGroup
 import user_agents
 from django.conf import settings
 import base64
@@ -66,19 +66,35 @@ def participate(request, name):
 
 def redirect_participant(request, name, student_number, student_number_cipher_dec):
     survey = Survey.objects.get(survey_name=name)
+
     set_language(survey, request)
     param_st_enc = survey.integration_parameter_student_enc
     param_branching = survey.integration_parameter_branching
     # use for testing connection and transfer of variables to limesurvey survey
     test_key = settings.APP_CONFIG['TEST_KEY']
     user_agent = user_agents.parse(request.META['HTTP_USER_AGENT'])
-    last_group = survey.last_group
-    number_of_groups = survey.group_count
 
-    if last_group < number_of_groups:
-        new_group = last_group + 1
+    # Is there a group to manually assign to?
+    survey_groups = SurveyGroup.objects.filter(survey=survey)
+    max_fill_count = 0
+    manual_group = None
+    for group in survey_groups:
+        if group.fill_count > max_fill_count:
+            max_fill_count = group.fill_count
+            manual_group = group
+
+    if manual_group != None:
+        new_group = manual_group.group_number
+        manual_group.fill_count -= 1
+        manual_group.save()
     else:
-        new_group = 1
+        last_group = survey.last_group
+        number_of_groups = survey.group_count
+
+        if last_group < number_of_groups:
+            new_group = last_group + 1
+        else:
+            new_group = 1
 
     survey_url = get_survey_url(survey, user_agent)[0]
     device_participant = get_survey_url(survey, user_agent)[1]

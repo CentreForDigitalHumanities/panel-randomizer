@@ -76,3 +76,15 @@ class Survey(models.Model):
 
     def __str__(self):
         return self.survey_name
+
+class SurveyGroup(models.Model):
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    group_number = models.IntegerField(
+        help_text='The group number')
+    fill_count = models.PositiveIntegerField(
+        default=0,
+        help_text='The number of participants you want in a group. Make the sure the group count of the survey is saved first to get the correct number of groups. For each participant assigned to a group the number is lowered. Once the fill counts are zero participants are assigned to groups by rotation.')
+    ordering = ['survey', 'group_number']
+
+    def __str__(self):
+        return "Group " + str(self.group_number)
