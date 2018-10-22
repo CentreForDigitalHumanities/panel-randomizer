@@ -25,6 +25,10 @@ class SurveyAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         missing = list(range(1, obj.group_count + 1))
+
+        # save the Survey first, because the groups are children of it
+        super().save_model(request, obj, form, change)
+
         # update the number of groups
         for group in SurveyGroup.objects.filter(survey=obj):
             if group.group_number > obj.group_count or \
@@ -39,8 +43,6 @@ class SurveyAdmin(admin.ModelAdmin):
         for group_number in missing:
             SurveyGroup(survey=obj,
                 group_number=group_number).save()
-
-        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Survey, SurveyAdmin)
