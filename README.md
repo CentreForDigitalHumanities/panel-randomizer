@@ -69,3 +69,7 @@ See: [dhlab-manuals.sites.uu.nl/handleiding/panel-randomizer-manual](https://dhl
 
 The first line starting with `<script>` will retrieve the javascript code that calls `youtube_helper.js`.
 The second line will place a YouTube player, which will start automatically playing the url you entered. The url after `data-video-url=` needs to be adjusted for the aimed video.
+
+## ROCKY ##
+
+This application was built as part of the ERC Advanced Grant project _"Forests and Trees: the Formal Semantics of Collective Categorization (ROCKY)"_. More information about this project can be found here: https://rocky.sites.uu.nl/.
