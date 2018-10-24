@@ -152,15 +152,13 @@ var YT; // set by YouTube iframe
     }
 
     function getNextButton() {
-        // click the 'next' button in LimeSurvey.
+        // click the 'next' or 'submit' button in LimeSurvey.
         // Different versions of LimeSurvey provide different IDs
-        var nextButton = document.getElementById("ls-button-submit"); // LimeSurvey 3.12
-
-        if (nextButton == null) {
-            nextButton = document.getElementById("movenextbtn"); // LimeSurvey 2.5
-        }
-
-        return nextButton;
+        /* LimeSurvey 3.12 */
+        return document.getElementById("ls-button-submit") ||
+            /* LimeSurvey 2.5 */
+            document.getElementById("movenextbtn") ||
+            document.getElementById("movesubmitbtn");
     }
 
     function goNext() {
