@@ -60,7 +60,8 @@
         });
     }
 
-    function getYouTubeId(url) {
+    // if it already exists globally, set it: because it could be created during a test
+    getYouTubeId = function(url) {
         var match = url.match(YouTubeIdPattern);
         if (match && match[1]) {
             return match[1];
