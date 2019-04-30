@@ -1,36 +1,64 @@
 /*
-	Embeds a video on a LimeSurvey page.
-	* scales video to screensize,
-	* starts the video;
-	* prevents video from pausing
-	* redirects to the next group when video has ended
+    Embeds a video on a LimeSurvey page.
+    * scales video to screensize,
+    * starts the video;
+    * prevents video from pausing
+    * redirects to the next group when video has ended
 
-	Usage:
-	Add the following in the question:
+    Usage:
+    Add the following in the question:
 
-	<div class="single-play-video" data-video-url="URL"></div>
-	Replace it with a YouTube URL or ID.
-	Works on urls:
-	https://www.youtube.com/watch?v=kxGWsHYITAw
-	https://youtu.be/kxGWsHYITAw
-	kxGWsHYITAw
+    <div class="single-play-video" data-video-url="URL"></div>
+    Replace it with a YouTube/Vimeo URL or ID.
+    Works on urls:
+    https://www.youtube.com/watch?v=-9-Te-DPbSE
+    https://youtu.be/-9-Te-DPbSE
+    https://vimeo.com/44474689
+    kxGWsHYITAw
+    44474689
 
-	Optionally:
+    Optionally:
 
-	Add data-before-next to make it appear and play *before*
-	continuing to the next question. This is a work-around for Safari
-	which doesn't allow auto-playing videos anymore.
+    Add data-before-next to make it appear and play *before*
+    continuing to the next question. This is a work-around for Safari
+    which doesn't allow auto-playing videos anymore.
 
-	E.g.
+    E.g.
 
-	<div class="single-play-video" data-video-url="URL" data-before-next="true"></div>
+    <div class="single-play-video" data-video-url="URL" data-before-next="true"></div>
+
+    Add data-provider to specify the provider (youtube, vimeo).
+    Normally this should be auto-detected properly.
 */
-
-var YT; // set by YouTube iframe
-
 (function () {
-    var ClassName = 'single-play-video';
-    var YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+    var PlyrJs = 'https://cdn.plyr.io/3.5.4/plyr.polyfilled.js',
+        PlyrCss = 'https://cdn.plyr.io/3.5.4/plyr.css',
+        ClassName = 'single-play-video',
+        VimeoPattern = /(vimeo\.com\/|^\d+$)/i,
+        YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+
+    function getSource(element) {
+        var url = element.getAttribute('data-video-url');
+        var provider = element.getAttribute('data-provider');
+        if (provider == 'vimeo' || !provider && VimeoPattern.test(url)) {
+            return {
+                provider: 'vimeo',
+                videoId: url
+            }
+        } else if (provider == 'youtube' || !provider && YouTubeIdPattern.test(url)) {
+            return {
+                provider: 'youtube',
+                videoId: getYouTubeId(url)
+            }
+        }
+
+        throw ({
+            message: "Unknown provider",
+            element: element,
+            url: url,
+            provider: provider
+        });
+    }
 
     function getYouTubeId(url) {
         var match = url.match(YouTubeIdPattern);
@@ -45,13 +73,22 @@ var YT; // set by YouTube iframe
         return false;
     }
 
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
+    function load() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = PlyrCss;
 
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var script = document.createElement('script');
+        script.onload = onload;
+        script.src = PlyrJs;
 
-    window['onYouTubeIframeAPIReady'] = function () {
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+
+        firstScriptTag.parentNode.insertBefore(link, firstScriptTag);
+        firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
+    }
+
+    function onload() {
         bindSinglePlay(document.getElementsByClassName(ClassName));
     }
 
@@ -62,14 +99,17 @@ var YT; // set by YouTube iframe
     }
 
     function createPlayer(element) {
-        var beforeNext = !!element.getAttribute('data-before-next');
+        // clear any spaces, also allows for a fallback message
+        element.innerHTML = '';
 
+        var beforeNext = !!element.getAttribute('data-before-next');
         var dimensions = getVideoDimensions(beforeNext);
         var videoWidth = dimensions[0];
         var videoHeight = dimensions[1];
 
-        var url = element.getAttribute('data-video-url');
-        var videoId = getYouTubeId(url);
+        var source = getSource(element);
+        videoId = source.videoId;
+        provider = source.provider;
 
         // already load the video player and hide it
         // this will be shown when the user clicks the 'next'-button
@@ -79,30 +119,21 @@ var YT; // set by YouTube iframe
         element.style.height = '0';
         element.style.overflow = 'hidden';
 
-        var player = new YT.Player(videoElement, {
-            height: videoHeight,
-            width: videoWidth,
-            videoId: videoId,
-            events: {
-                'onReady': !beforeNext ?
-                    function (event) {
-                        onPlayerReady(event, element)
-                    } : function () {},
-                'onStateChange': onPlayerStateChange,
-                'onError': onPlayerError
-            },
-            // hide video controls
-            playerVars: {
-                'controls': 0,
-                'disablekb': 1,
-                'modestbranding': 1,
-                'showinfo': 0,
-                'fs': 0,
-                'showsearch': 0,
-                'rel': 0
-            }
-        });
+        videoElement.setAttribute('data-plyr-provider', provider);
+        videoElement.setAttribute('data-plyr-embed-id', videoId);
 
+        var player = new Plyr(videoElement, {
+            height: videoHeight,
+            width: videoWidth
+        });
+        player.on('ready', !beforeNext ?
+            function (event) {
+                onPlayerReady(event, element)
+            } : function () { });
+        player.on('error', onPlayerError);
+        player.on('statechange', onYouTubePlayerStateChange);
+        player.on('ended', onEnded(beforeNext, player));
+        player.on('pause', keepOnPlaying(player));
         if (beforeNext) {
             wrapNextButton(element, player);
         }
@@ -130,24 +161,39 @@ var YT; // set by YouTube iframe
         return [videoWidth, videoHeight];
     }
 
-    function onPlayerError(event) {
-        alert('Video does not play, please contact research department')
+    function onPlayerError(error) {
+        if (/playback ?rate/g.test(error.detail.message)) {
+            // workaround for Vimeo error
+            return;
+        }
+        alert('Video does not play, please contact research department');
+        console.log(error);
     }
 
     function onPlayerReady(event, container) {
         showVideo(container);
-        event.target.playVideo();
+        event.detail.plyr.play();
     }
 
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PAUSED) {
+    function onYouTubePlayerStateChange(event) {
+        if (event.detail.code == YT.PlayerState.PAUSED) {
             // disable pausing the video, by starting it again
-            event.target.playVideo();
+            event.detail.plyr.play();
         }
+    }
 
-        if (event.data == YT.PlayerState.ENDED) {
-            goNext();
-            event.target.destroy();
+    function keepOnPlaying(player) {
+        return function () {
+            player.play();
+        }
+    }
+
+    function onEnded(beforeNext, player) {
+        return function () {
+            player.destroy();
+            if (beforeNext) {
+                goNext();
+            }
         }
     }
 
@@ -191,7 +237,7 @@ var YT; // set by YouTube iframe
             showVideo(container);
 
             event.preventDefault();
-            player.playVideo();
+            player.play();
         });
     }
 
@@ -237,4 +283,6 @@ var YT; // set by YouTube iframe
 
         return true;
     }
+
+    load();
 })();
