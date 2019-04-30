@@ -5,7 +5,9 @@
   "main": "scripts/panel_randomizer_app/js/video_helper.js",
   "scripts": {
     "build": "echo No build needed for plain JavaScript",
-    "test": "karma start karma.conf.js --single-run"
+    "start": "python manage.py runserver",
+    "test": "karma start karma.conf.js --single-run && npm run test-func",
+    "test-func": "cd functional-tests && pytest"
   },
   "repository": {
     "type": "git",

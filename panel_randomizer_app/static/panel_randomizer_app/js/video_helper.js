@@ -35,7 +35,8 @@
         PlyrCss = 'https://cdn.plyr.io/3.5.4/plyr.css',
         ClassName = 'single-play-video',
         VimeoPattern = /(vimeo\.com\/|^\d+$)/i,
-        YouTubeIdPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+        YouTubeUrlPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/,
+        YouTubeIdPattern = /^[^#\&\?]*$/;
 
     function getSource(element) {
         var url = element.getAttribute('data-video-url');
@@ -45,7 +46,8 @@
                 provider: 'vimeo',
                 videoId: url
             }
-        } else if (provider == 'youtube' || !provider && YouTubeIdPattern.test(url)) {
+        } else if (provider == 'youtube' || !provider &&
+            (YouTubeUrlPattern.test(url) || YouTubeIdPattern.test(url))) {
             return {
                 provider: 'youtube',
                 videoId: getYouTubeId(url)
@@ -61,13 +63,13 @@
     }
 
     // if it already exists globally, set it: because it could be created during a test
-    getYouTubeId = function(url) {
-        var match = url.match(YouTubeIdPattern);
+    getYouTubeId = function (url) {
+        var match = url.match(YouTubeUrlPattern);
         if (match && match[1]) {
             return match[1];
         }
 
-        if (url.length >= 11 && /^[^#\&\?]*$/.test(url)) {
+        if (url.length >= 11 && YouTubeIdPattern.test(url)) {
             // only an ID
             return url;
         }
@@ -133,7 +135,7 @@
             } : function () { });
         player.on('error', onPlayerError);
         player.on('statechange', onYouTubePlayerStateChange);
-        player.on('ended', onEnded(beforeNext, player));
+        player.on('ended', onEnded(beforeNext, player, element))  ;
         player.on('pause', keepOnPlaying(player));
         if (beforeNext) {
             wrapNextButton(element, player);
@@ -189,11 +191,13 @@
         }
     }
 
-    function onEnded(beforeNext, player) {
+    function onEnded(beforeNext, player, element) {
         return function () {
             player.destroy();
             if (beforeNext) {
                 goNext();
+            } else {
+                element.remove();
             }
         }
     }
@@ -222,10 +226,6 @@
         nextButton.style.display = 'none';
 
         var fakeButton = document.createElement(nextButton.tagName);
-        fakeButton.className = nextButton.className.replace('submit', '');
-        fakeButton.innerHTML = nextButton.innerHTML;
-
-        nextButton.parentNode.appendChild(fakeButton);
 
         fakeButton.addEventListener('click', function (event) {
             if (!checkMandatoryQuestions()) {
@@ -240,6 +240,10 @@
             event.preventDefault();
             player.play();
         });
+        fakeButton.className = nextButton.className.replace('submit', '') + ' fake-button';
+        fakeButton.innerHTML = nextButton.innerHTML;
+
+        nextButton.parentNode.appendChild(fakeButton);
     }
 
     function showVideo(container) {
