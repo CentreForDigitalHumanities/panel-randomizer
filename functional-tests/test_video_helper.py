@@ -23,7 +23,6 @@ def test_before_next(browser, screenshot):
 
     screenshot.save('clicked')
 
-    wait.until(EC.alert_is_present())
-    alert = browser.switch_to.alert
-    assert alert.text == 'Next question!'
-    alert.accept()
+    message = wait.until(
+        EC.text_to_be_present_in_element((By.ID, "message"), 'Next question!'))
+    assert message

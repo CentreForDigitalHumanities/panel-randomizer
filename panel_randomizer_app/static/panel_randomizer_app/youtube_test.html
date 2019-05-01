@@ -3,6 +3,7 @@
 
 <head>
     <title>Test Videos</title>
+    <link rel="stylesheet" href="css/test.css" />
 </head>
 
 <body>
@@ -12,7 +13,8 @@
     <script>
         document.getElementById('ls-button-submit').click = function () {
             // in LimeSurvey the survey would go to the next question now
-            alert('Next question!');
+            document.getElementsByClassName('single-play-video')[0].remove();
+            document.getElementById('message').innerText = 'Next question!';
         }
     </script>
     <span id="message"></span>
