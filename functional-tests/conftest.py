@@ -29,6 +29,11 @@ class Screenshot:
                 raise
         self.driver.save_screenshot(os.path.join("screenshots", f"{name}.png"))
 
+def clean_test(driver):
+    if driver.name != 'firefox':
+        # no log in Firefox https://github.com/SeleniumHQ/selenium/issues/2972
+        for entry in driver.get_log('browser'):
+            print(entry)
 
 def pytest_addoption(parser):
     """ py.test hook where we register configuration options and defaults. """
@@ -70,6 +75,7 @@ def webdriver_instance(webdriver_name):
     try:
         yield driver
     finally:
+        clean_test(driver)
         driver.quit()
 
 
