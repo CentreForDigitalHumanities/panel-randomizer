@@ -16,7 +16,7 @@ class Screenshot:
         self.iteration = 0
 
     def save(self, name=None):
-        timestamp = f'{self.base_timestamp}-{self.iteration:04d}'
+        timestamp = f'{self.base_timestamp}-{self.iteration:04d}-{self.driver.name}'
         if name == None:
             name = timestamp
         else:

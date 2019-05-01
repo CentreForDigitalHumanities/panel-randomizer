@@ -23,6 +23,8 @@ def test_before_next(browser, screenshot):
     assert next_button
     next_button.click()
 
+    time.sleep(2)
+
     filepath = screenshot.save('clicked')
     # expect that the complexity of the picture is higher (because a video is playing)
     assert os.path.getsize(filepath) >= 32000
