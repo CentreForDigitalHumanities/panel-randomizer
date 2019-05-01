@@ -22,12 +22,18 @@ class Screenshot:
         else:
             name = timestamp + '-' + name
         self.iteration += 1
+
+        filepath = os.path.join("screenshots", f"{name}.png")
+
         try:
             os.makedirs("screenshots")
         except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
-        self.driver.save_screenshot(os.path.join("screenshots", f"{name}.png"))
+        if not self.driver.save_screenshot(filepath):
+            raise
+
+        return filepath
 
 def clean_test(driver):
     if driver.name != 'firefox':
