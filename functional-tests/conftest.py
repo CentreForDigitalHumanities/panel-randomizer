@@ -1,9 +1,33 @@
 import os
+import errno
 import pytest
+from datetime import datetime
+
 from selenium import webdriver
 
 WEBDRIVER_INI_NAME = 'webdriver'
 BASE_ADDRESS_OPTION_NAME = 'base_address'
+
+
+class Screenshot:
+    def __init__(self, driver):
+        self.driver = driver
+        self.base_timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        self.iteration = 0
+
+    def save(self, name=None):
+        timestamp = f'{self.base_timestamp}-{self.iteration:04d}'
+        if name == None:
+            name = timestamp
+        else:
+            name = timestamp + '-' + name
+        self.iteration += 1
+        try:
+            os.makedirs("screenshots")
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                raise
+        self.driver.save_screenshot(os.path.join("screenshots", f"{name}.png"))
 
 
 def pytest_addoption(parser):
@@ -12,7 +36,7 @@ def pytest_addoption(parser):
         WEBDRIVER_INI_NAME,
         'Specify browsers in which the tests should run',
         type='linelist',
-        default=['Chrome' ,'Firefox'],
+        default=['Chrome', 'Firefox'],
     )
     parser.addoption(
         '--base-address',
@@ -37,14 +61,9 @@ def webdriver_instance(webdriver_name):
     """
     if webdriver_name == 'Chrome':
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
         driver = webdriver.Chrome(options=options)
-    elif webdriver_name == 'Firefox':
-        options = webdriver.FirefoxOptions()
-        options.add_argument('-headless')
-        driver = webdriver.Firefox(options=options)
     else:
         factory = getattr(webdriver, webdriver_name)
         driver = factory()
@@ -59,6 +78,15 @@ def browser(webdriver_instance):
     """ Provides a WebDriver instance and performs some cleanups afterwards. """
     yield webdriver_instance
     webdriver_instance.delete_all_cookies()
+
+
+@pytest.fixture
+def screenshot(browser):
+    screenshot = Screenshot(browser)
+    try:
+        yield screenshot
+    finally:
+        screenshot.save('final')
 
 
 @pytest.fixture(scope='session')

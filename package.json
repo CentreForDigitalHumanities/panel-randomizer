@@ -7,7 +7,7 @@
     "build": "echo No build needed for plain JavaScript",
     "start": "python manage.py runserver",
     "test": "karma start karma.conf.js --single-run && npm run test-func",
-    "test-func": "cd functional-tests && pytest"
+    "test-func": "cd functional-tests && rm -rf screenshots/ && pytest"
   },
   "repository": {
     "type": "git",
