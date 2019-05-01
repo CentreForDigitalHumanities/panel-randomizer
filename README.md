@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/panelrandomizer.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/panel-randomizer)
+[![Build Status](https://travis-ci.org/UUDigitalHumanitieslab/panel-randomizer.svg?branch=develop)](https://travis-ci.org/UUDigitalHumanitieslab/panel-randomizer)
 
 Manual: [dhlab-manuals.sites.uu.nl/handleiding/panel-randomizer-manual](https://dhlab-manuals.sites.uu.nl/handleiding/panel-randomizer-manual/)
 
