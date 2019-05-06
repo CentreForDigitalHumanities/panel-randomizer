@@ -15,7 +15,8 @@ module.exports = function (config) {
 
         // list of files / patterns to exclude
         exclude: [
-            'node_modules'
+            'node_modules',
+            'panel_randomizer_app/**/youtube_helper.js' // symlink
         ],
 
         // preprocess matching files before serving them to the browser
