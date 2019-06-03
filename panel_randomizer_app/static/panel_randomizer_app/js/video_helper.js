@@ -135,7 +135,7 @@
             } : function () { });
         player.on('error', onPlayerError);
         player.on('statechange', onYouTubePlayerStateChange);
-        player.on('ended', onEnded(beforeNext, player, element))  ;
+        player.on('ended', onEnded(beforeNext, player, element));
         player.on('pause', keepOnPlaying(player));
         if (beforeNext) {
             wrapNextButton(element, player);
@@ -169,7 +169,13 @@
             // workaround for Vimeo error
             return;
         }
-        alert('Video does not play, please contact research department');
+        var errorText;
+        if (error && error.detail && error.detail.message) {
+            errorText = error.detail.message;
+        } else {
+            errorText = error.toString();
+        }
+        alert('Video does not play, please contact research department:\n\n' + errorText);
         console.log(error);
     }
 
