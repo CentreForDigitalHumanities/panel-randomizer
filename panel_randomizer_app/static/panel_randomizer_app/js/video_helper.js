@@ -125,6 +125,8 @@
         videoElement.setAttribute('data-plyr-provider', provider);
         videoElement.setAttribute('data-plyr-embed-id', videoId);
 
+        var playStatus = { playing: false };
+
         var player = new Plyr(videoElement, {
             height: videoHeight,
             width: videoWidth
@@ -133,12 +135,15 @@
             function (event) {
                 onPlayerReady(event, element)
             } : function () { });
-        player.on('error', onPlayerError);
+        player.on('error', onPlayerError(playStatus));
         player.on('statechange', onYouTubePlayerStateChange);
         player.on('ended', onEnded(beforeNext, player, element));
         player.on('pause', keepOnPlaying(player));
         if (beforeNext) {
-            wrapNextButton(element, player);
+            wrapNextButton(element, function () {
+                player.play();
+                playStatus = true;
+            });
         }
     }
 
@@ -164,19 +169,26 @@
         return [videoWidth, videoHeight];
     }
 
-    function onPlayerError(error) {
-        if (/playback ?rate/g.test(error.detail.message)) {
-            // workaround for Vimeo error
-            return;
+    function onPlayerError(playStatus) {
+        return function (error) {
+            if (/playback ?rate/g.test(error.detail.message)) {
+                // workaround for Vimeo thumbnail error https://github.com/sampotts/plyr/issues/1181
+                // we don't display the thumbnail anyway
+                return;
+            }
+            var errorText;
+            if (error && error.detail && error.detail.message) {
+                errorText = error.detail.message;
+            } else {
+                errorText = error.toString();
+            }
+            if (!playStatus.playing && error.detail && error.detail.name && error.detail.name === 'PrivacyError') {
+                // ignore
+            } else {
+                alert('Video does not play, please contact research department:\n\n' + errorText);
+                console.error(error);
+            }
         }
-        var errorText;
-        if (error && error.detail && error.detail.message) {
-            errorText = error.detail.message;
-        } else {
-            errorText = error.toString();
-        }
-        alert('Video does not play, please contact research department:\n\n' + errorText);
-        console.log(error);
     }
 
     function onPlayerReady(event, container) {
@@ -227,7 +239,7 @@
         nextButton.click();
     }
 
-    function wrapNextButton(container, player) {
+    function wrapNextButton(container, play) {
         var nextButton = getNextButton();
         nextButton.style.display = 'none';
 
@@ -244,7 +256,7 @@
             showVideo(container);
 
             event.preventDefault();
-            player.play();
+            play();
         });
         fakeButton.className = nextButton.className.replace('submit', '') + ' fake-button';
         fakeButton.innerHTML = nextButton.innerHTML;
