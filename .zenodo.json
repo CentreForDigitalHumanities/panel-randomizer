@@ -1,0 +1,20 @@
+{
+    "creators": [
+        {
+            "affiliation": "Digital Humanities Lab, Utrecht University",
+            "name": "Spoel, Sheean"
+        },
+        {
+            "affiliation": "Digital Humanities Lab, Utrecht University",
+            "name": "Loeber, Robert"
+        },
+        {
+            "affiliation": "Digital Humanities Lab, Utrecht University",
+            "name": "Hebing, Alex"
+        }
+    ],
+    "license": {
+        "id": "ISC"
+    },
+    "title": "Panel Randomizer"
+}
