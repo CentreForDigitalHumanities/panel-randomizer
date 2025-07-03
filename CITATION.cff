@@ -1,6 +1,6 @@
 # YAML 1.2
 ---
-authors: 
+authors:
   -
     affiliation: "Digital Humanities Lab, Utrecht University"
     family-names: Spoel
@@ -17,7 +17,7 @@ cff-version: "1.1.0"
 date-released: 2019-11-21
 license: ISC
 message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/UUDigitalHumanitieslab/panel-randomizer"
+repository-code: "https://github.com/CentreForDigitalHumanities/panel-randomizer"
 title: "Panel Randomizer"
 version: "1.0"
 ...

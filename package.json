@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UUDigitalHumanitieslab/panelrandomizer.git"
+    "url": "git+https://github.com/CentreForDigitalHumanities/panelrandomizer.git"
   },
   "author": "Digital Humanities Lab, Utrecht University",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/UUDigitalHumanitieslab/panelrandomizer/issues"
+    "url": "https://github.com/CentreForDigitalHumanities/panelrandomizer/issues"
   },
-  "homepage": "https://github.com/UUDigitalHumanitieslab/panelrandomizer#readme",
+  "homepage": "https://github.com/CentreForDigitalHumanities/panelrandomizer#readme",
   "devDependencies": {
     "jasmine-core": "^3.1.0",
     "karma": "^2.0.4",
